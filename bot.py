@@ -1,10 +1,18 @@
 import os
 import discord
+from pymongo import MongoClient
 
 from discord.ext import commands
 
 client = commands.Bot(command_prefix = '.', intents = discord.Intents.all())
 client.remove_command('help')
+
+mongo_url = "mongodb+srv://FarMaT:123456789a@cluster0.v7xif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+cluster = MongoClient(mongo_url)
+db = cluster["UserData"]
+
+collection = db["UserData"]
+
 
 
 @client.event
