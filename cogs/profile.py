@@ -406,11 +406,11 @@ class Profile(commands.Cog):
             join = f"<t:{jjoin:.0f}:f>"
             #-Дата когда пользователь присоединился-^
             if str(user.status) == 'online':
-                status = "🟩"
+                status = "<:status_online:596576749790429200>"
             if str(user.status) == 'idle':
-                status = "🟧"
+                status = "<:status_idle:596576773488115722>"
             if str(user.status) == 'dnd':
-                status = "🟥"
+                status = "<:status_dnd:596576774364856321>"
             if str(user.status) == 'offline':
                 status = "💤"
             profile = disnake.Embed(
