@@ -339,11 +339,8 @@ class Profile(commands.Cog):
         ]
     )
     async def profile(self,inter, user=None):
-        await inter.response.defer()
         user = inter.author if not user else user
         if not user.bot:
-            await asyncio.sleep(3)
-            await inter.edit_original_message
             await self.paginator(inter, user, 'profile')
 
 
@@ -409,11 +406,11 @@ class Profile(commands.Cog):
             join = f"<t:{jjoin:.0f}:f>"
             #-Дата когда пользователь присоединился-^
             if str(user.status) == 'online':
-                status = "🟩"
+                status = "<:status_online:596576749790429200>"
             if str(user.status) == 'idle':
-                status = "🟧"
+                status = "<:status_idle:596576773488115722>"
             if str(user.status) == 'dnd':
-                status = "🟥"
+                status = "<:status_dnd:596576774364856321>"
             if str(user.status) == 'offline':
                 status = "💤"
             profile = disnake.Embed(
@@ -433,9 +430,6 @@ class Profile(commands.Cog):
             ).add_field(
                 name=f"<:icon1:892483703241080832> Присоединился",
                 value=f"{join}"
-            ).add_field(
-                name="<:badges:904114356613173351> Значки",
-                value=f"скоро"
             ).add_field(
                 name=f"<:usericon:891624858214072382> Всего сообщений оправлено",
                 value=f"{inflect_by_amount(countmsg, 'сообщение')}",
@@ -477,8 +471,8 @@ class Profile(commands.Cog):
                 name=f"<:icon1:892483703241080832> Присоединился",
                 value=f"{join}"
             )
-        await asyncio.sleep(3)
-        await inter.edit_original_message(embed = profile,ephemeral=True)
+        await asyncio.sleep(1)
+        await inter.edit_original_message(embed = profile)
 
 
 def setup(client):

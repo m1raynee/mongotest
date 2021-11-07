@@ -1,3 +1,5 @@
+import os
+from aiohttp.helpers import TOKEN
 import disnake
 
 from disnake.ext import commands

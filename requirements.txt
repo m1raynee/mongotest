@@ -1,0 +1,8 @@
+aiohttp==3.7.4
+disnake==2.2.1
+Django==3.2.8
+Pillow
+motor
+pymongo
+pymorphy2
+requests
