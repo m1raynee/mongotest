@@ -1,31 +1,37 @@
 import os
-import discord
+import disnake
 import certifi
 import motor.motor_asyncio
 
-from discord.ext import commands
+from disnake.ext import commands
+from pathlib import Path
+# from discord.ext import commands
 
 client = commands.Bot(
-    command_prefix = '.',
-    intents = discord.Intents.all()
+    command_prefix = '+',
+    intents = disnake.Intents.all(),
 )
-client.remove_command('help')
+cwd = Path(__file__).parents[0]
+cwd = str(cwd)
+# inter_client = InteractionClient(client)
 
+guilds = [
+    846682680791531530
+]
+
+#---mongo:
 ca = certifi.where()
-
 client.mongo = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://FarMaT:123456789a@cluster0.v7xif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tlsCAFile=ca)
 client.db = client.mongo.users
-
 client.collection = client.db.Cluster0
-
-
+#-----
 
 
 
 @client.event
 async def on_ready():
     print(f"Аккаунт: {client.user}")
-    await client.change_presence(status=discord.Status.dnd)
+    await client.change_presence(status=disnake.Status.idle)
 
 
 @client.command(name = 'ext')
@@ -40,15 +46,17 @@ async def extentions_menage(ctx, sub_command, ext_name):
         client.reload_extension(f'cogs.{ext_name}')
         await ctx.send(f'Расширение `{ext_name}` перезагружено')
 
-loads = ''
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        loads += f'{filename[:-3]}, '
-        client.load_extension(f'cogs.{filename[:-3]}')
-loads = loads[:-2]
-client.load_extension('jishaku')
+def _load_Cogs():
+    for filename in os.listdir(cwd + "/cogs"):
+        if not filename.startswith("_"):
+            if filename.endswith('.py'):
+                client.load_extension(f'cogs.{filename[:-3]}')
+            else:
+                client.load_extension(f'cogs.{filename}')
+
 
 class functions:
+    
     @staticmethod
     async def insert_server(guild):
         server = {
@@ -60,17 +68,18 @@ class functions:
         return True
 
     @staticmethod
-    async def user_check(user, guild: discord.Guild, met:str = None, key:str = 'users'):
+    async def user_check(user, guild: disnake.Guild, met:str = None, key:str = 'users'):
         
         def upd(server):
             return {
-                "cash": 40,
+                "money": 100,
 
                 "xp": 0,
-
+                "ms": 0, #количество сообщений
+                "cm": 0, #количество использованых комманд
 
                 "bio": None,
-                "rep": 0,
+                "prestige": 0,
             }
 
         if type(user) == int:
@@ -110,7 +119,7 @@ class functions:
             return True
 
     @staticmethod
-    async def user_update(user, guild: discord.Guild, key:str, ch, met = 'update', func='set', key2 = 'users'):
+    async def user_update(user, guild: disnake.Guild, key:str, ch, met = 'update', func='set', key2 = 'users'):
         userdb = await functions.user_check(user, guild)
         server = await client.collection.find_one({"_id": guild.id})
         if server == None:
@@ -120,7 +129,7 @@ class functions:
         
 
         a = server[key2].copy()
-        if type(user.id) == discord.Member:
+        if type(user.id) == disnake.Member:
             user.id = user.id.id
         if met == 'update':
             if func == 'set':
@@ -150,5 +159,6 @@ class functions:
             print(f'Метод {met} не найден')
 
 
-print(f'Подгруженные расширения: {loads}')
-client.run("ODgyMjgxOTE4NjE4NTQyMTIx.YS5HEQ.mJcdeU8THIglZ4SARvdAR1ikXf4")
+if __name__ == "__main__":
+    _load_Cogs()
+    client.run("ODgyMjgxOTE4NjE4NTQyMTIx.YS5HEQ.mJcdeU8THIglZ4SARvdAR1ikXf4")

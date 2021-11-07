@@ -1,27 +1,19 @@
-import discord
+import disnake
 
-from discord.ext import commands
+from disnake.ext import commands
 from launcher import functions as funs
 
 
-class economy(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+class Economy(commands.Cog):
+    def __init__(self, client):
+        self.bot = client
 
 
     @commands.command()
-    async def money(self, ctx, member:discord.Member=None):
-        member = ctx.author if not member else member
-        userdb = await funs.user_check(member, ctx.guild)
-        embed=discord.Embed(
-            title="Монетки", 
-            description=f"У `{member.display_name}` на балансе {userdb['cash']}"
-            )
-        await ctx.reply(embed=embed,mention_author=True)
+    async def add_money(self,ctx,money:int=15):
+        await ctx.send(f"Добавлено {money} монет")
+        await funs.user_update(ctx.author, ctx.guild, "money", money, 'update', 'inc','users')
 
 
-def setup(bot):
-    bot.add_cog(economy(bot))
-    
-def teardown(bot):
-    bot.remove_cog(economy(bot))
+def setup(client):
+    client.add_cog(Economy(client))
