@@ -339,8 +339,11 @@ class Profile(commands.Cog):
         ]
     )
     async def profile(self,inter, user=None):
+        await inter.response.defer()
         user = inter.author if not user else user
         if not user.bot:
+            await asyncio.sleep(3)
+            await inter.edit_original_message
             await self.paginator(inter, user, 'profile')
 
 
@@ -380,6 +383,7 @@ class Profile(commands.Cog):
         guild_ids=guilds
     )
     async def pprofile(self,inter):
+        await inter.response.defer()
         user = inter.guild.get_member(inter.target.id)
         member = await funs.user_check(user, inter.guild)
         ava = user.avatar.replace(static_format='png',size=4096)
@@ -473,7 +477,8 @@ class Profile(commands.Cog):
                 name=f"<:icon1:892483703241080832> Присоединился",
                 value=f"{join}"
             )
-        await inter.response.send_message(embed = profile,ephemeral=True)
+        await asyncio.sleep(3)
+        await inter.edit_original_message(embed = profile,ephemeral=True)
 
 
 def setup(client):

@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 import asyncio
 from PIL import Image
 from io import BytesIO
+
+from disnake.ext.commands.cooldowns import BucketType
 from launcher import functions as funs
 
 import pymorphy2
@@ -45,14 +47,15 @@ class prestige(commands.Cog):
             disnake.Option("user", "Укажите пользователя", disnake.OptionType.user),
         ]
     )
-    async def prestige(self, inter, user):
+    @commands.cooldown(4, 86400, BucketType.user)
+    async def prestige(self, inter, user = disnake.Member):
         if user.id == inter.author.id:
             await inter.response.send_message('Нельзя повысить престиж самому себе!')
-        if inter.target.bot == True: 
+        if user.bot == True:
             await inter.response.send_message('Нельзя повысить престиж боту!')
-        if inter.target.bot == False:
+        if not user.bot:
             member = await funs.user_check(user, inter.guild)
-            await funs.user_update(user, inter.guild, "rep", 1, 'update', 'inc','users')
+            await funs.user_update(user, inter.guild, "prestige", 1, 'update', 'inc','users')
             await inter.response.send_message(f'Успешно повышен престиж пользователю {user.display_name}.')
 
 def setup(client):
