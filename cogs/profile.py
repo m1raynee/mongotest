@@ -339,11 +339,8 @@ class Profile(commands.Cog):
         ]
     )
     async def profile(self,inter, user=None):
-        await inter.response.defer()
         user = inter.author if not user else user
         if not user.bot:
-            await asyncio.sleep(3)
-            await inter.edit_original_message
             await self.paginator(inter, user, 'profile')
 
 
@@ -434,9 +431,6 @@ class Profile(commands.Cog):
                 name=f"<:icon1:892483703241080832> Присоединился",
                 value=f"{join}"
             ).add_field(
-                name="<:badges:904114356613173351> Значки",
-                value=f"скоро"
-            ).add_field(
                 name=f"<:usericon:891624858214072382> Всего сообщений оправлено",
                 value=f"{inflect_by_amount(countmsg, 'сообщение')}",
                 inline=False
@@ -477,8 +471,8 @@ class Profile(commands.Cog):
                 name=f"<:icon1:892483703241080832> Присоединился",
                 value=f"{join}"
             )
-        await asyncio.sleep(3)
-        await inter.edit_original_message(embed = profile,ephemeral=True)
+        await asyncio.sleep(1)
+        await inter.edit_original_message(embed = profile)
 
 
 def setup(client):
