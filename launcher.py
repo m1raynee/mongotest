@@ -21,7 +21,7 @@ guilds = [
 
 #---mongo:
 ca = certifi.where()
-client.mongo = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://FarMaT:123456789a@cluster0.v7xif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tlsCAFile=ca)
+client.mongo = motor.motor_asyncio.AsyncIOMotorClient("", tlsCAFile=ca)
 client.db = client.mongo.users
 client.collection = client.db.Cluster0
 #-----
@@ -161,4 +161,4 @@ class functions:
 
 if __name__ == "__main__":
     _load_Cogs()
-    client.run("ODgyMjgxOTE4NjE4NTQyMTIx.YS5HEQ.mJcdeU8THIglZ4SARvdAR1ikXf4")
+    client.run()
