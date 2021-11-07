@@ -1,17 +1,3 @@
-import os
-from aiohttp.helpers import TOKEN
-import disnake
+from bot import Bot
 
-from disnake.ext import commands
-
-
-guilds = [
-    846682680791531530
-]
-
-
-
-
-if __name__ == "__main__":
-    _load_cogs(bot)
-    bot.run()
+Bot().run('token')
